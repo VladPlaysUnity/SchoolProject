@@ -1,0 +1,43 @@
+.registrationPage{
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+}
+
+hr{
+  height: 450px;
+}
+
+.nameOfBlock{
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+.loginBlock{
+  display: grid;
+  padding-top: 100px;
+  height: 300px;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.loginBlock input{
+  width: 250px;
+  height: 30px;
+}
+.loginBlock button{
+  width: 150px;
+  height: 25px;
+}
+
+.signUpBlock{
+  display: grid;
+  padding-top: 100px;
+  height: 300px;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.signUpBlock input{
+  width: 250px;
+  height: 30px;
+}
+.signUpBlock button{
+  width: 150px;
+  height: 25px;
+}

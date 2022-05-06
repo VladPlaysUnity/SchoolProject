@@ -1,0 +1,16 @@
+.App {
+  display: grid;
+  width: 1000px;
+  margin: auto;
+  text-align: center;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+  "menu"
+  "content";
+  grid-gap:15px;
+}
+
+.app-wrapper-content{
+  grid-area: content;
+}

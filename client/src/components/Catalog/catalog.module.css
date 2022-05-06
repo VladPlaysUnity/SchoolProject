@@ -1,0 +1,23 @@
+.catalogPage{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: "sl" "el";
+}
+
+.searchline{
+  grid-area: sl;
+  display: grid;
+  grid-template-columns: 9fr 1fr;
+  grid-template-rows: 30px;
+  width: 100%;
+}
+
+
+.elemList{
+  grid-area: el;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  grid-gap: 20px;
+  flex-direction: column;
+}

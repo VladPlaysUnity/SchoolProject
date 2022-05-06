@@ -1,0 +1,46 @@
+.fictionElem{
+  display: grid;
+  width:100%;
+  grid-template-columns: 3fr 6fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "im det rate" "im det linkb";
+  height: 300px;
+  border: 0px solid black;
+  grid-gap: 5px;
+}
+
+.coverPhoto{
+  grid-area: im;
+}
+.coverPhoto img{
+  height: 300px;
+  width: auto;
+}
+
+.details{
+  grid-area: det;
+  border: 1px solid black;
+  line-height: 10px;
+}
+.details h3{
+  text-align: center;
+}
+.details p{
+  text-align: left;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.rating{
+  grid-area: rate;
+  padding-top: 50%;
+  border: 1px solid black;
+}
+
+.link_button{
+    grid-area: linkb;
+}
+.link_button button{
+  width:100%;
+  height: 100%;
+}

@@ -1,0 +1,26 @@
+.details{
+  grid-area: details;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 80px auto;
+  grid-template-areas: "lp lp lp rp rp" "about about about about about";
+  text-align: left;
+  padding-left: 10px;
+}
+.details .leftPart{
+  grid-area: lp;
+}
+.details .rightPart{
+  grid-area: rp;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.details .rightPart input{
+  width: 15px;
+  text-align: center;
+  border: 1px solid black;
+}
+.details .about{
+  grid-area: about;
+}

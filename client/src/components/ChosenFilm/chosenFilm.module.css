@@ -1,0 +1,114 @@
+.chosenFilm{
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr auto auto auto;
+  grid-template-areas:
+  "n n n n n"
+  "i i d d d"
+  "lowp lowp lowp lowp lowp"
+  "com com com nothing nothing";
+  border: 0px solid black;
+  grid-gap:10px;
+}
+
+.name{
+  grid-area: n;
+  font-size: 30px;
+}
+
+.film{
+  grid-area:i;
+  display: grid;
+  width: auto;
+  height: 330px;
+  border: 0px solid black;
+  grid-template-rows: 5fr 1fr;
+  grid-template-areas: "photo" "status";
+}
+.film .filmImg{
+  grid-area: photo;
+  border: 0px solid black;
+}
+.filmImg img{
+  max-height: 270px;
+}
+.film .status{
+  grid-area: status;
+}
+.status select{
+  width: 50%;
+  decoration: none;
+  height: 50%;
+  font-size: 20px;
+  text-align: center;
+}
+
+.details{
+  grid-area: d;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 80px auto;
+  grid-template-areas: "lp lp lp rp rp" "about about about about about";
+  text-align: left;
+  padding-left: 10px;
+}
+.details .leftPart{
+  grid-area: lp;
+}
+.details .rightPart{
+  grid-area: rp;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.details .rightPart input{
+  width: 15px;
+  text-align: center;
+  border: 1px solid black;
+}
+.details .about{
+  grid-area: about;
+}
+
+.lowerPart{
+  grid-area: lowp;
+  display: grid;
+  grid-template-columns: 600px 2fr;
+  grid-template-rows: repeat(5, 30px);
+  grid-template-areas: "ltd at_f" "0 at_f" "cta at_f" "cta at_f" "cta at_f";
+  grid-gap: 5px;
+}
+
+.link_to_download{
+  grid-area: ltd;
+  padding-left: 0px;
+  text-align: left;
+  border: 1px solid black;
+  padding: 3px;
+}
+
+
+
+.comment_section{
+  grid-area: cta;
+  border: 0px solid black;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "ta s" "ta sb";
+}
+.comment_section textarea{
+  grid-area: ta;
+}
+
+.comment_section button{
+  grid-area: sb;
+}
+
+
+.comments{
+  grid-area: com;
+  display: flex;
+  flex-direction: column;
+}

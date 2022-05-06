@@ -1,0 +1,16 @@
+.write_comment_section{
+  grid-area: wcs;
+  height: 200px;
+  border: 0px solid black;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "ta s" "ta sb";
+}
+.comment_section textarea{
+  grid-area: ta;
+}
+
+.comment_section button{
+  grid-area: sb;
+}

@@ -1,0 +1,63 @@
+.chosenFiction{
+  display: grid;
+  width: 100%;
+  grid-template-rows: 30px auto 600px;
+  grid-template-areas:
+  "name"
+  "upper_part"
+  "lower_part";
+  border: 0px solid black;
+  grid-gap:10px;
+}
+
+.name{
+  grid-area: name;
+}
+
+.upperPart{
+  grid-area: upper_part;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  grid-template-areas: "fiction details";
+}
+.fiction{
+  grid-area: fiction;
+  display: grid;
+  width: 100%;
+  height: 330px;
+  border: 0px solid black;
+  grid-template-rows: 5fr 1fr;
+  grid-template-areas: "photo" "status";
+}
+.fiction .coverPhoto{
+  grid-area: photo;
+  border: 0px solid black;
+}
+.coverPhoto img{
+  max-height: 270px;
+}
+.fiction .status{
+  grid-area: status;
+}
+.status select{
+  width: 50%;
+  decoration: none;
+  height: 50%;
+  font-size: 20px;
+  text-align: center;
+}
+
+.lowerPart{
+  grid-area: lower_part;
+  display: grid;
+  grid-template-columns: 600px 2fr;
+  grid-template-rows: repeat(5, 30px);
+  grid-template-areas: "ltd af" "0 af" "cta af" "cta af" "cta af";
+  grid-gap: 5px;
+}
+.cta{
+  grid-area:cta;
+  display: grid;
+  grid-template-rows: 100px auto;
+  grid-template-areas: "wcs" "comments";
+}

@@ -1,0 +1,28 @@
+.profile{
+    display: grid;
+    grid-template-areas: "photo addInfo" "comments friendList";
+    grid-template-rows: 300px auto;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    grid-gap: 5px;
+    margin-top: 0;
+}
+
+
+.photo{
+  grid-area: photo;
+  border: 1px solid black;
+  background-image: url("https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198?k=20&m=476085198&s=170667a&w=0&h=FXkT-N6vISLOCUefa9MyQg0pH-6loMX9zBZjgLK458c=");
+  background-size: cover;
+}
+
+
+.comments{
+  grid-area: comments;
+  display: flex;
+  flex-direction: column;
+  border: 0px solid black;
+  padding-left: 3%;
+  padding-right: 3%;
+  align-items: center;
+}

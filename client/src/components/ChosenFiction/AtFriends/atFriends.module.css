@@ -1,0 +1,36 @@
+.at_friends{
+  grid-area: af;
+  display: grid;
+  border: 1px solid black;
+  grid-template-rows: 1fr 6fr 1fr;
+  grid-template-areas: "name" "lof" "pnb";
+  height: 300px;
+  margin-left: 39px;
+  margin-right: 39px;
+}
+
+.list_of_friends{
+  grid-area: lof;
+  display: grid;
+  width: 100%;
+  grid-template-rows: repeat(5, 1fr);
+}
+.list_of_friends .friendElem{
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
+  border: 1px solid black;
+}
+.pagesNButtons{
+  grid-area: pnb;
+  display:grid;
+  grid-template-columns: 2fr 3fr 2fr;
+}
+.pagesNButtons div{
+  padding-top: 4px;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}

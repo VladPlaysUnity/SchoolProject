@@ -1,0 +1,60 @@
+.add_info{
+  grid-area: addInfo;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas: "name name name name name addFriend" "wf wf wf pf pf pf" "rb rb rb pb pb pb";
+}
+.add_info button{
+  width: 100%;
+  height: 70%;
+}
+.username{
+  grid-area: name;
+  padding-top: 9%;
+  border: 0px solid black;
+  text-align: center;
+}
+
+.add_friend_button{
+  grid-area: addFriend;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.watched_films{
+  grid-area: wf;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.planned_films{
+  grid-area: pf;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.last_film{
+  grid-area: lf;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.read_books{
+  grid-area: rb;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.planned_books{
+  grid-area: pb;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+.last_books{
+  grid-area: lb;
+  padding-top: 12%;
+  padding-left: 5%;
+  padding-right: 5%;
+}

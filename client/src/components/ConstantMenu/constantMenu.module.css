@@ -1,0 +1,18 @@
+.menu{
+  grid-area: menu;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.item{
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+.active{
+  display: block;
+  border: 1px solid black;
+  text-decoration: none;
+  color: black;
+}

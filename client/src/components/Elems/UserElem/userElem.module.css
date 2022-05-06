@@ -1,0 +1,35 @@
+.userElem{
+  display: grid;
+  width:70%;
+  grid-template-columns: 1fr 6fr 2fr;
+  grid-template-areas: "im det linkb";
+  height:40px;
+  border: 0px solid black;
+}
+
+.profilePhoto{
+  grid-area: im;
+  justify-content: center;
+  border: 1px solid black;
+}
+.profilePhoto img{
+  height: 40px;
+  width: auto;
+}
+
+.details{
+  grid-area: det;
+  border: 1px solid black;
+}
+.details p{
+  text-align: center;
+}
+
+
+.link_button{
+  grid-area: linkb;
+}
+.link_button button{
+  width:100%;
+  height: 100%;
+}
