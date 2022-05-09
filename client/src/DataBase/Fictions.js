@@ -15,40 +15,56 @@ let fiction4 = new Fiction(4, {coverPhoto:require('./../images/ready_player_one.
 let dbFictions = {fictions:[fiction0, fiction1, fiction2, fiction3, fiction4]}
 
 
-export const getFictionById = (fiction_id)=>{
+async function getFictionById(fiction_id){
   //returns fiction whose id was mentioned
-  for (let i = 0; i <dbFictions.fictions.length; i++) {
-    if(dbFictions.fictions[i].id == fiction_id){
-      return dbFictions.fictions[i]
-    }
+  const response = await fetch(`http://localhost:5000/fiction/getFictionById/${fiction_id}`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getfiction: ${response.statusText}`;
+      window.alert(message);
+      return;
   }
+
+  return await response.json();
 }
 
-export const getAllFictions = () =>{
+async function getAllFictions (){
   //returns list of all fictions
-  return dbFictions.fictions
+  const response = await fetch(`http://localhost:5000/fiction/getAllFictions`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getalllfictions: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
 }
 
-export const getAllFilms = ()=>{
-  //returns all fictions whose type is film
-  let films = []
-  for (let i = 0; i <dbFictions.fictions.length; i++) {
-    if(dbFictions.fictions[i].type == 'film'){
-      films.push(dbFictions.fictions[i])
-    }
+async function getAllFilms (){
+  //returns list of all films
+  const response = await fetch("http://localhost:5000/fiction/getAllFilms");
+
+  if (!response.ok) {
+     const message = `An error occurred: ${response.statusText}`;
+      window.alert(message);
+      return;
   }
-  return films
+
+  return await response.json();
 }
 
-export const getAllBooks = ()=>{
-  //returns all fictions whose type is film
-  let books = []
-  for (let i = 0; i <dbFictions.fictions.length; i++) {
-    if(dbFictions.fictions[i].type == 'book'){
-      books.push(dbFictions.fictions[i])
-    }
+async function getAllBooks (){
+  //returns list of all books
+  const response = await fetch(`http://localhost:5000/fiction/getAllBooks`);
+
+  if (!response.ok) {
+     const message = `An error occurred: ${response.statusText}`;
+      window.alert(message);
+      return;
   }
-  return books
+
+  return await response.json();
 }
 
 export const getRatingOfFictionFromUser=(fiction_id, user_id)=>{
@@ -99,3 +115,5 @@ export const changeUsersRatingOfFiction = (fiction_id, user_id, rating) =>{
     }
   }
 }
+
+export{ getAllFictions, getAllBooks, getAllFilms, getFictionById };

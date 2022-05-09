@@ -1,0 +1,40 @@
+const [fiction, setFiction] = useState([]);
+const [error, setError] = useState(null);
+const [isLoaded, setIsLoaded] = useState(false);
+
+const { iD } = useParams()
+
+useEffect(()=>{
+  let chosenFiction = getFictionById(iD)
+  .then((result)=>{
+    setIsLoaded(true);
+    setFiction(result)
+  },(error)=>{
+    setIsLoaded(true)
+    setError(error)
+  })
+})
+
+let view = ''
+if (getLoggedInStatus()){
+  view = 'loggedInUsersView';
+}else{
+  view = 'notLoggedInUsersView';
+}
+
+let changeUsersRatingOfFiction = (rating) =>{
+  //props.dispatch(changeUsersRatingOfFictionActionCreator(iD, getLoggedUserId(), rating))
+}
+let changeUsersStatusOfFiction = (status) =>{
+  //props.dispatch(changeUsersStatusOfFictionActionCreator(getLoggedUserId(), iD, status))
+}
+
+let fictionAtFriends = []
+//let friendsOfUser = getUsersFriends(getLoggedUserId())
+//for (var i = 0; i < friendsOfUser.length; i++) {
+//  fictionAtFriends.push({iD:friendsOfUser[i].iD, name:friendsOfUser[i].usersInfo.name, status:getFictionAtUser(fiction.iD, friendsOfUser[i].iD)})
+//}
+
+let addComment = (content) =>{
+  //props.dispatch(addCommentActionCreator(getLoggedUserId(),fiction.iD, content))
+}

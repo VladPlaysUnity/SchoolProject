@@ -11,7 +11,7 @@ const RegistrationPage = (props)=>{
   let sg_email = React.createRef();
   let sg_password = React.createRef();
 
-  let logIn = ()=>{
+  async function logIn (){
     props.tryLogIn(log_username.current.value, log_password.current.value)
   }
 

@@ -4,11 +4,10 @@ import {NavLink} from "react-router-dom";
 const FictionElem = (props) =>{
   let fictionLink = '';
   let author_or_director = ''
-  if (props.type == 'book'){
-    fictionLink = '/bookCatalog/' + props.id;
+  fictionLink = '/fiction/' + props.iD;
+  if (props.type == 'book'){  
     author_or_director = <p><b>Author:</b> {props.info.author}</p>
   } else if (props.type == 'film'){
-    fictionLink = '/filmCatalog/' + props.id;
     author_or_director = <p><b>Director:</b> {props.info.director}</p>
   }
   return (

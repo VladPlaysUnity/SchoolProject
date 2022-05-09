@@ -9,17 +9,17 @@ const CatalogPage = (props) =>{
   switch (props.type) {
     case 'book':
       elems = props.elems.map((bookElem)=>{
-        return (<FictionElem id={bookElem.id} info={bookElem.info} overallRating={getOverallRatingOfFiction(bookElem.id)} type={props.type}/>)
+        return (<FictionElem iD={bookElem.iD} info={bookElem.info} overallRating={getOverallRatingOfFiction(bookElem.iD)} type={props.type}/>)
       });
       break;
     case 'film':
       elems = props.elems.map((filmElem)=>{
-        return (<FictionElem id={filmElem.id} info={filmElem.info} overallRating={getOverallRatingOfFiction(filmElem.id)}type={props.type}/>)
+        return (<FictionElem iD={filmElem.iD} info={filmElem.info} overallRating={getOverallRatingOfFiction(filmElem.iD)}type={props.type}/>)
       });
       break;
     case 'user':
       elems = props.elems.map((userElem)=>{
-        return (<UserElem id={userElem.id} info={userElem.usersInfo}/>)
+        return (<UserElem id={userElem.iD} info={userElem.usersInfo}/>)
       });
       break;
     default:
