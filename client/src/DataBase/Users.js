@@ -13,15 +13,71 @@ export let dbUsers = {users:[user0, user1, user2]}
 
 
 export const addUser = (username, password, email) =>{
-  //adds user to db
-  let newUser = new User(dbUsers.users[dbUsers.users.length-1].id + 1, {name:username, password:password, email:email}, [], [])
-  dbUsers.users.push(newUser);
-  return newUser.id
+  //it is already in regist page
 }
 
-export const getAllUsers = () =>{
-  //returns all users from db
-  return dbUsers.users;
+async function getAllUsers (){
+  //returns list of all fictions
+  const response = await fetch(`http://localhost:5000/user/getAllUsers`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getAllUsers: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
+}
+
+async function getUserById(user_id){
+  //returns fiction whose id was mentioned
+  const response = await fetch(`http://localhost:5000/user/getUserById/${user_id}`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getUserById: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
+}
+
+async function getFictionAtUser(user_id, fiction_id){
+  //returns fiction whose id was mentioned
+  const response = await fetch(`http://localhost:5000/user/getFictionAtUser/${user_id}/${fiction_id}`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getFictionAtUser: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
+}
+
+async function getUsersFriends (user_id) {
+  //returns list of objects(users) which are friends of user
+  const response = await fetch(`http://localhost:5000/user/getUsersFriends/${user_id}`);
+
+  if (!response.ok) {
+     const message = `An error occurred at getUsersFriends: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
+}
+
+async function isFriend (user1_id, user2_id){
+  const response = await fetch(`http://localhost:5000/user/isFriend/${user1_id}/${user2_id}`);
+
+  if (!response.ok) {
+     const message = `An error occurred at isFriend: ${response.statusText}`;
+      window.alert(message);
+      return;
+  }
+
+  return await response.json();
 }
 
 export const makeUsersFriends = (user1_id, user2_id) =>{
@@ -55,58 +111,5 @@ export const stopBeingFriends = (user1_id, user2_id) =>{
   console.log(dbUsers.users);
 }
 
-export const isFriend = (user1_id, user2_id)=>{
-  return getUserById(user1_id).friends.includes(user2_id) ? true : false
-}
 
-export const getUserById = (user_id) =>{
-  //returns user whose id is mentioned
-  for (let i=0;i < dbUsers.users.length; i++){
-    if (dbUsers.users[i].id == user_id){
-      return dbUsers.users[i]
-    }
-  }
-}
-
-export const getUsersFriends = (user_id) =>{
-  //returns list of objects(users) which are friends of user
-  let friendsOfUser = [];
-  let user = getUserById(user_id);
-  for (let i=0;i < user.friends.length; i++){
-    friendsOfUser.push(getUserById(user.friends[i]))
-  }
-  return friendsOfUser
-}
-
-export const getFictionAtUser = (fiction_id, user_id)=>{
-  //returns metioned users status of fiction
-  let user = getUserById(user_id);
-  for (var i = 0; i < user.markedFictions.length; i++) {
-    if (user.markedFictions[i].fiction_id == fiction_id){
-      return user.markedFictions[i].status
-    }
-  }
-  return 'not completed'
-}
-
-export const changeUsersStatusOfFiction = (user_id, fiction_id, status) =>{
-  // changes users status of metioned fiction
-
-  for (let i=0;i < dbUsers.users.length; i++){
-    if (dbUsers.users[i].id == user_id){
-      for (let j = 0; j < dbUsers.users[i].markedFictions.length; j++) {
-        if (dbUsers.users[i].markedFictions[j].fiction_id == fiction_id){
-          if ((status == 'not completed')){
-            dbUsers.users[i].markedFictions.splice(j, 1)
-            return
-          } else {
-            dbUsers.users[i].markedFictions[j].status = status
-            return
-          }
-        }
-      }
-      dbUsers.users[i].markedFictions.push({fiction_id:fiction_id, status:status})
-      return
-    }
-  }
-}
+export { getAllUsers, getUserById, getFictionAtUser, getUsersFriends, isFriend }

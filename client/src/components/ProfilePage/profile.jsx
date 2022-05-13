@@ -20,8 +20,8 @@ const ProfilePage = (props) =>{
   return (
     <div className={s.profile}>
       <div className={s.photo}><img src={props.info.profilePhoto} /></div>
-      <UsersInfo id={props.id} username={props.info.name}
-                 type={props.type} isFriend={props.isFriend}
+      <UsersInfo iD={props.iD} username={props.info.name}
+                 view={props.view} isFriend={props.isFriend}
                  addFriend={props.addFriend} removeFriend={props.removeFriend}/>
       <div className={s.comment_section}>
         User's Comments

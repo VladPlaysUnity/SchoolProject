@@ -1,25 +1,49 @@
-import {getFictionById, getAllFictions, getRatingOfFictionFromUser, getOverallRatingOfFiction} from './../../DataBase/Fictions.js'
-import {getUsersFriends, getFictionAtUser} from './../../DataBase/Users.js'
-import {getFictionsComments} from './../../DataBase/Comments.js'
-import {getLoggedInStatus, getLoggedUserId} from './../../LocalInfo/localInfo.js'
-import {changeUsersRatingOfFictionActionCreator, changeUsersStatusOfFictionActionCreator, addCommentActionCreator} from './../../redux/reducers/chosenFictionReducer.js'
-import {Routes, Route, useParams, useNavigate} from "react-router-dom";
-import {useState, useEffect} from 'react';
+import { getFictionById, getAllFictions, getRatingOfFictionFromUser, getOverallRatingOfFiction } from './../../DataBase/Fictions.js'
+import { getUsersFriends, getFictionAtUser } from './../../DataBase/Users.js'
+import { getFictionsComments } from './../../DataBase/Comments.js'
+import { getLoggedInStatus } from './../../LocalInfo/localInfo.js'
+import { changeUsersRatingOfFictionActionCreator, changeUsersStatusOfFictionActionCreator, addCommentActionCreator } from './../../redux/reducers/chosenFictionReducer.js'
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import ChosenFiction from './chosenFiction.jsx'
 
 const ChosenFictionContainer = (props) =>{
   const [fiction, setFiction] = useState([]);
- const params = useParams();
- const [error, setError] = useState(null);
- const [isLoaded, setIsLoaded] = useState(false);
+  const [userRating, setUserRating] = useState(0)
+  const [userStatus, setUserStatus] = useState('not completed')
+  const [overallRating, setOverallRating] = useState(0)
+  const params = useParams();
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
 
  useEffect(() => {
-   getFictionById(params.iD)
-   .then((result)=>{
-     setFiction(result)
-     setIsLoaded(true)
-   })
- }, []);
+   let fP = getFictionById(params.iD)
+   let oRP = getOverallRatingOfFiction(params.iD)
+   let rP = ''
+   let uS = ''
+   if (getLoggedInStatus()){
+     rP = getRatingOfFictionFromUser(params.iD, props.loggedUser)
+     uS = getFictionAtUser(props.loggedUser, params.iD)
+   }
+
+   if (getLoggedInStatus()){
+     Promise.all([fP, rP, oRP, uS])
+     .then((result)=>{
+       setFiction(result[0])
+       setOverallRating(result[2])
+       setUserRating(result[1])
+       setUserStatus(result[3])
+       setIsLoaded(true)
+     })
+   } else{
+     Promise.all([fP, oRP])
+     .then((result)=>{
+       setFiction(result[0])
+       setOverallRating(result[1])
+       setIsLoaded(true)
+     })}
+ }, [props.loggedUser,params.iD]);
 
  let view = ''
  if (getLoggedInStatus()){
@@ -29,20 +53,22 @@ const ChosenFictionContainer = (props) =>{
  }
 
  let changeUsersRatingOfFiction = (rating) =>{
-   //props.dispatch(changeUsersRatingOfFictionActionCreator(iD, getLoggedUserId(), rating))
+   props.dispatch(changeUsersRatingOfFictionActionCreator(params.iD, props.loggedUser, rating))
+   setUserRating(rating)
  }
  let changeUsersStatusOfFiction = (status) =>{
-   //props.dispatch(changeUsersStatusOfFictionActionCreator(getLoggedUserId(), iD, status))
+   props.dispatch(changeUsersStatusOfFictionActionCreator(props.loggedUser, params.iD, status))
+   setUserStatus(status)
  }
 
  let fictionAtFriends = []
- //let friendsOfUser = getUsersFriends(getLoggedUserId())
+ //let friendsOfUser = getUsersFriends(props.loggedUser)
  //for (var i = 0; i < friendsOfUser.length; i++) {
  //  fictionAtFriends.push({iD:friendsOfUser[i].iD, name:friendsOfUser[i].usersInfo.name, status:getFictionAtUser(fiction.iD, friendsOfUser[i].iD)})
  //}
 
  let addComment = (content) =>{
-   //props.dispatch(addCommentActionCreator(getLoggedUserId(),fiction.iD, content))
+   //props.dispatch(addCommentActionCreator(props.loggedUser,fiction.iD, content))
  }
 
 
@@ -56,10 +82,10 @@ const ChosenFictionContainer = (props) =>{
     }
     return(
       <div>
-      <ChosenFiction fiction={fiction} loggedIn={getLoggedInStatus()}
-                usersStatus='not completed'
-                usersRating={5}
-                overallRating={6}
+      <ChosenFiction fiction={fiction}
+                usersStatus={userStatus}
+                usersRating={userRating}
+                overallRating={overallRating}
                 comments={[]}
                 fictionAtFriends={fictionAtFriends} addComment={addComment}
                 changeUsersRatingOfFiction={changeUsersRatingOfFiction}
@@ -68,11 +94,6 @@ const ChosenFictionContainer = (props) =>{
       </div>
     )
   }
-  return(
-    <div>
-      {params.iD}
-    </div>
-  )
 }
 
 export default ChosenFictionContainer;

@@ -1,6 +1,6 @@
 let localInfo = {
-  loggedIn: true,
-  loggedUserId: 0
+  loggedIn: false,
+  loggedUserId: ''
 }
 
 export const setLoggedUserId = (user_id) => {

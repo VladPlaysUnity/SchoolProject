@@ -9,27 +9,41 @@ let initialState = {}
 const registrationReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN:{
-      let users = getAllUsers()
-      for (var i = 0; i < users.length; i++) {
-        if (users[i].usersInfo.name == action.username && users[i].usersInfo.password == action.password){
-          setLoggedUserId(users[i].id)
-          return state
+      async function tryLog(){
+        const respons = await fetch(`http://localhost:5000/user/checkIfUsersDataIsRight/${action.username}/${action.password}`);
+
+        if (!respons.ok) {
+           const message = `An error occurred at registpage: ${respons.statusText}`;
+            window.alert(message);
+            return;
         }
+
+        setLoggedUserId(await respons.json())
+        console.log(getLoggedUserId());
+        return state
       }
-      return state
+      tryLog()
     }
     case SIGN_UP:{
-      let users = getAllUsers()
-      for (var i = 0; i < users.length; i++) {
-        if (users[i].usersInfo.email == action.email){
-          return state
-        }
-        if (users[i].usersInfo.username == action.username){
-          return state
-        }
+      async function signUpFu(name, pass, email) {
+
+        const newUser = { name: name, password: pass, email:email };
+        const response = await fetch("http://localhost:5000/user/add", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(newUser),
+       })
+       if (!response.ok) {
+          const message = `An error occurred at registpage: ${response.statusText}`;
+           window.alert(message);
+           return;
+       }
+       setLoggedUserId(await response.json());
+       return state;
       }
-      setLoggedUserId(addUser(action.username, action.password, action.email))
-      return state
+      signUpFu(action.username, action.password, action.email)
     }
 
     default:

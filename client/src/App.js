@@ -1,36 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import ConstantMenu from './components/ConstantMenu/constantMenu.jsx';
 import RegistrationPageContainer from './components/RegistrationPage/registrationPageContainer.jsx'
-import ProfilePagesContainer from './components/ProfilePage/profilePagesContainer.jsx'
-import CatalogPage from './components/Catalog/catalog.jsx'
+import ProfilePageContainer from './components/ProfilePage/profilePageContainer.jsx'
+import CatalogPageContainer from './components/Catalog/catalogPageContainer.jsx'
 import ChosenFictionContainer from './components/ChosenFiction/chosenFictionContainer.jsx'
 import AddFictionPage from './components/AddFictionPage/addFictionPage.jsx'
 import {getAllFilms, getAllBooks} from './DataBase/Fictions.js'
 import {getAllUsers} from './DataBase/Users.js'
-import {getLoggedInStatus} from './LocalInfo/localInfo.js'
+import {getLoggedInStatus, getLoggedUserId} from './LocalInfo/localInfo.js'
 import {useState, useEffect} from 'react'
 
 const App = (props) => {
-  const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const [loggedUser, setLoggedUser] = useState('')
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let registration = <RegistrationPageContainer dispatch={props.dispatch}/>
+  let registration = <RegistrationPageContainer setLoggedUser={setLoggedUser} dispatch={props.dispatch}/>
 
   useEffect(()=>{
-    let filmsPromise = getAllFilms()
-    let booksPromise = getAllBooks()
-    let usersPromise = getAllFilms()
+    console.log(getLoggedUserId())
+    setIsLoaded(true)
 
-    Promise.all([filmsPromise, booksPromise, usersPromise])
-    .then((result)=>{
-      setIsLoaded(true);
-      setItems(result)
-    })
-
-  }, [])
+    console.log('lol');
+  }, [loggedUser])
 
   if(error){
     return <div>Error: {error.message}</div>
@@ -44,7 +38,6 @@ const App = (props) => {
               <Route path='/registration' element={registration}/>
               <Route path='/addFiction' element={<AddFictionPage/>}/>
             </Routes>
-            <ProfilePagesContainer dispatch={props.dispatch}/>
             </div>
           </div>
         </Router>
@@ -56,14 +49,13 @@ const App = (props) => {
           <ConstantMenu />
           <div className="app-wrapper-content">
             <Routes>
-              <Route path='/registration' element={registration}/>
+              <Route path='/registration' element={getLoggedInStatus() ? <Navigate to={'/profile/' + getLoggedUserId()}/>:registration}/>
               <Route path='/addFiction' element={<AddFictionPage/>}/>
-              <Route path='/filmCatalog' element={<CatalogPage type='film' elems={items[0]}/>}/>
-              <Route path='/bookCatalog' element={<CatalogPage type='book' elems={items[1]}/>}/>
-              <Route path='/userCatalog' element={<CatalogPage type='film' elems={items[2]}/>}/>
-              <Route path='/fiction/:iD' element={<ChosenFictionContainer/>}/>
+              <Route exact path='/catalog/:type' element={<CatalogPageContainer/>}/>
+              <Route exact path='/user/:userID/:type' element={<CatalogPageContainer/>}/>
+              <Route path='/fiction/:iD' element={<ChosenFictionContainer loggedUser={loggedUser} dispatch={props.dispatch}/>}/>
+              <Route path='/profile/:iD' element={<ProfilePageContainer loggedUser={loggedUser} dispatch={props.dispatch}/>}/>
             </Routes>
-            <ProfilePagesContainer dispatch={props.dispatch}/>
             </div>
           </div>
         </Router>

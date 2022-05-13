@@ -11,15 +11,32 @@ let intialState = {};
 const chosenFictionReducer = (state = intialState, action) => {
   switch (action.type) {
     case CHANGE_USERS_STATUS_OF_FICTION:{
-      changeUsersStatusOfFiction(action.user_id, action.fiction_id, action.status)
+      async function changeStatus(){
+        await fetch(`http://localhost:5000/user/changeUsersStatusOfFiction/${action.user_id}`, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({fiction_id:action.fiction_id, status:action.status}),
+          })
+      }
+      changeStatus()
       return state
     }
     case CHANGE_USERS_RATING_OF_FICTION:{
-      changeUsersRatingOfFiction(action.fiction_id, action.user_id, action.rating)
+      async function changeRating() {
+        await fetch(`http://localhost:5000/fiction/changeUsersRatingOfFiction/${action.fiction_id}/${action.user_id}`, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({rating:action.rating}),
+          })
+      }
+      changeRating()
       return state
     }
     case ADD_COMMENT: {
-      console.log(4);
       addComment(action.author_id, action.place_id, action.content)
       return state;
     };

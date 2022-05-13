@@ -2,7 +2,6 @@ import s from './fictionDetails.module.css'
 import React from 'react'
 
 const FictionDetails = (props) =>{
-
   let author_or_director = ''
   if (props.type == 'film'){
     author_or_director = <p><b>Director</b>: {props.info.director}</p>
@@ -16,7 +15,7 @@ const FictionDetails = (props) =>{
   }
 
   let usersRatingSelect = <select ref={rating} onChange={changeRating} value={props.usersRating}>
-                              <option value={'not rated'}>Not rated</option>
+                              <option value={-1}>Not rated</option>
                               <option value={1}>1</option>
                               <option value={2}>2</option>
                               <option value={3}>3</option>
@@ -36,22 +35,22 @@ const FictionDetails = (props) =>{
   }
 
   return (
-    <div className={s.details}>
-        <div className={s.leftPart}>
-          {author_or_director}
-          <p><b>Genre</b>: {props.info.genre}</p>
-        </div>
+      <div className={s.details}>
+          <div className={s.leftPart}>
+            {author_or_director}
+            <p><b>Genre</b>: {props.info.genre}</p>
+          </div>
 
-        <div className={s.rightPart}>
-          <div className={s.overallRating}><b>Overall rating</b> : {props.overallRating}/10</div>
-          {usersRating}
-        </div>
+          <div className={s.rightPart}>
+            <div className={s.overallRating}><b>Overall rating</b> : {props.overallRating}</div>
+            {usersRating}
+          </div>
 
-        <div className={s.about}>
-          <p><b>Description</b>: {props.info.description}</p>
-        </div>
-    </div>
-  )
+          <div className={s.about}>
+            <p><b>Description</b>: {props.info.description}</p>
+          </div>
+      </div>
+    )
 }
 
 export default FictionDetails;

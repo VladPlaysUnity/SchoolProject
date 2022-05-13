@@ -2,7 +2,7 @@ import s from './userElem.module.css';
 import {NavLink} from "react-router-dom";
 
 const UserElem = (props) =>{
-  let userLink = '/profile/' + props.id.toString();
+  let userLink = '/profile/' + props.iD.toString();
   return (
     <div className={s.userElem}>
       <div className={s.profilePhoto}><img src={props.info.profilePhoto} /></div>

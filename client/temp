@@ -1,40 +1,18 @@
-const [fiction, setFiction] = useState([]);
-const [error, setError] = useState(null);
-const [isLoaded, setIsLoaded] = useState(false);
+.then((d)=>{
+  async function getId(){
+    const response = await fetch(`http://localhost:5000/user/checkIfUsersDataIsRight/${name}/${pass}`);
 
-const { iD } = useParams()
+    if (!response.ok) {
+       const message = `An error occurred at registpage: ${response.statusText}`;
+        window.alert(message);
+        return;
+    }
 
-useEffect(()=>{
-  let chosenFiction = getFictionById(iD)
-  .then((result)=>{
-    setIsLoaded(true);
-    setFiction(result)
-  },(error)=>{
-    setIsLoaded(true)
-    setError(error)
+    return await response.json();
+  }
+  getId().then((id)=>{
+    setLoggedUserId(parseInt(id))
+    console.log(5);
+   return state
   })
 })
-
-let view = ''
-if (getLoggedInStatus()){
-  view = 'loggedInUsersView';
-}else{
-  view = 'notLoggedInUsersView';
-}
-
-let changeUsersRatingOfFiction = (rating) =>{
-  //props.dispatch(changeUsersRatingOfFictionActionCreator(iD, getLoggedUserId(), rating))
-}
-let changeUsersStatusOfFiction = (status) =>{
-  //props.dispatch(changeUsersStatusOfFictionActionCreator(getLoggedUserId(), iD, status))
-}
-
-let fictionAtFriends = []
-//let friendsOfUser = getUsersFriends(getLoggedUserId())
-//for (var i = 0; i < friendsOfUser.length; i++) {
-//  fictionAtFriends.push({iD:friendsOfUser[i].iD, name:friendsOfUser[i].usersInfo.name, status:getFictionAtUser(fiction.iD, friendsOfUser[i].iD)})
-//}
-
-let addComment = (content) =>{
-  //props.dispatch(addCommentActionCreator(getLoggedUserId(),fiction.iD, content))
-}

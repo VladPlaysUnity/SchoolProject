@@ -14,6 +14,7 @@ const ChosenFiction = (props) =>{
 
   let changeStatus = () =>{
     props.changeUsersStatusOfFiction(status_line.current.value)
+    console.log('ko');
   }
 
   if (props.fiction.type == 'film' ){
