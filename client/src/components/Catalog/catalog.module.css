@@ -7,7 +7,6 @@
 .searchline{
   grid-area: sl;
   display: grid;
-  grid-template-columns: 9fr 1fr;
   grid-template-rows: 30px;
   width: 100%;
 }

@@ -176,7 +176,6 @@ commentRoutes.route("/comment/getFictionsComments/:fictionID").get(function (req
 });
 
 commentRoutes.route("/comment/getStatusOfCommentFromUser/:iD/:userID").get(function (req, res) {
-  console.log(req.params.iD, req.params.userID);
   let db_connect = dbo.getDb("FictionLib");
   let myquery = { iD: parseInt(req.params.iD)};
   db_connect

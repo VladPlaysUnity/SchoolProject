@@ -22,7 +22,7 @@ const CatalogPageContainer = (props) =>{
     setElems([])
     switch (params.type) {
       case 'allBooks':
-        setType('book')
+        setType('fiction')
         getAllBooks()
         .then((result)=>{
             setIsLoaded(true);
@@ -31,7 +31,7 @@ const CatalogPageContainer = (props) =>{
         break;
 
       case 'allFilms':
-        setType('film')
+        setType('fiction')
           getAllFilms()
           .then((result)=>{
               setIsLoaded(true);
@@ -49,7 +49,7 @@ const CatalogPageContainer = (props) =>{
         break;
 
       case 'read_books':
-      setType('book')
+      setType('fiction')
         getUserById(params.userID)
         .then((user)=>{
           let rb = []
@@ -75,7 +75,7 @@ const CatalogPageContainer = (props) =>{
         break;
 
       case 'planned_books':
-      setType('book')
+      setType('fiction')
         getUserById(params.userID)
         .then((user)=>{
           let pb = []
@@ -101,7 +101,7 @@ const CatalogPageContainer = (props) =>{
         break;
 
       case 'watched_films':
-      setType('film')
+      setType('fiction')
         getUserById(params.userID)
         .then((user)=>{
           let wf = []
@@ -127,7 +127,7 @@ const CatalogPageContainer = (props) =>{
         break;
 
       case 'planned_films':
-      setType('film')
+      setType('fiction')
         getUserById(params.userID)
         .then((user)=>{
           let pf = []
