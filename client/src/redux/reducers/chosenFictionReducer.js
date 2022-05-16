@@ -1,6 +1,6 @@
 import {changeUsersStatusOfFiction} from './../../DataBase/Users.js'
 import {changeUsersRatingOfFiction} from './../../DataBase/Fictions.js'
-import {addComment} from './../../DataBase/Comments.js'
+import {} from './../../DataBase/Comments.js'
 
 const CHANGE_USERS_STATUS_OF_FICTION = 'CHANGE-USERS-STATUS-OF-FICTION';
 const CHANGE_USERS_RATING_OF_FICTION = 'CHANGE-USERS-RATING-OF-FICTION';
@@ -37,7 +37,7 @@ const chosenFictionReducer = (state = intialState, action) => {
       return state
     }
     case ADD_COMMENT: {
-      addComment(action.author_id, action.place_id, action.content)
+      //addComment(action.author_id, action.place_id, action.content)
       return state;
     };
     default:

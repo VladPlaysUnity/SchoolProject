@@ -1,5 +1,5 @@
 import s from './profile.module.css'
-import FriendList from './FriendList/friendList.jsx'
+import FollowList from './FollowList/followList.jsx'
 import UsersInfo from './UsersInfo/usersInfo.jsx'
 import CommentsContainer from './../CommentsComponent/commentsContainer.jsx'
 
@@ -21,15 +21,15 @@ const ProfilePage = (props) =>{
     <div className={s.profile}>
       <div className={s.photo}><img src={props.info.profilePhoto} /></div>
       <UsersInfo iD={props.iD} username={props.info.name}
-                 view={props.view} isFriend={props.isFriend}
-                 addFriend={props.addFriend} removeFriend={props.removeFriend}/>
+                 view={props.view} isFollowed={props.isFollowed}
+                 followUser={props.followUser} unfollowUser={props.unfollowUser}/>
       <div className={s.comment_section}>
         User's Comments
         <div className={s.comments}>
-          <CommentsContainer comments={props.comments} dispatch={props.dispatch}/>
+          <CommentsContainer comments={props.comments} like_or_dislike={props.like_or_dislike} dispatch={props.dispatch}/>
         </div>
       </div>
-      <FriendList friends={props.friends} type={props.type}/>
+      <FollowList followedPeople={props.followedPeople} view={props.view}/>
     </div>
   );
 }

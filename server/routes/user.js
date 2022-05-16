@@ -6,10 +6,10 @@ const dbo = require("../db/conn");
 
 const ObjectId = require("mongodb").ObjectId;
 
-function User(iD, usersInfo, friends, markedFictions) {
+function User(iD, usersInfo, followedPeople, markedFictions) {
   this.iD = iD;
   this.usersInfo = usersInfo;
-  this.friends = friends;
+  this.followedPeople = followedPeople;
   this.markedFictions = markedFictions;
 }
 
@@ -45,7 +45,7 @@ userRoutes.route("/user/add").post(function (req, response) {
       newUser = {
         iD: newID+1,
         usersInfo: {profilePhoto:'', name:req.body.name, password:req.body.password, email:req.body.email},
-        friends: [],
+        followedPeople: [],
         markedFictions: []
       }
       db_connect.collection("users").insertOne(newUser, function (err, result) {
@@ -81,43 +81,49 @@ userRoutes.route("/user/getAllUsers").get(function (req, res) {
 userRoutes.route("/user/getFictionAtUser/:userID/:fictionID").get(function (req, res) {
   let db_connect = dbo.getDb("FictionLib");
   let myquery = { iD: parseInt(req.params.userID)};
+  let found = false
   db_connect
       .collection("users")
-      .findOne(myquery, function (err, result) {
+      .findOne(myquery, function (err, u) {
         if (err) throw err;
-        let u = result
         for (let i = 0; i < u.markedFictions.length; i++) {
           if(u.markedFictions[i].fiction_id == req.params.fictionID){
-              return res.json(u.markedFictions[i].status)
+            found = true
+              res.json(u.markedFictions[i].status)
           }
         }
-        return res.json('not completed');
+        if(!found){
+          res.json('not completed');
+        }
       });
 });
 
-userRoutes.route("/user/getUsersFriends/:iD").get(function (req, res) {
+userRoutes.route("/user/getUsersFollowedPeople/:iD").get(function (req, res) {
   let db_connect = dbo.getDb();
   let myquery = { iD: parseInt(req.params.iD)};
+  let fOfUser = [];
   db_connect
       .collection("users")
-      .findOne(myquery, function (err, result) {
+      .findOne(myquery, function (err, u) {
         if (err) throw err;
-        let friendsOfUser = [];
-        let u = result;
-        for (let i=0; i < u.friends.length; i++){
-          let myq = { iD: u.friends[i]};
-          db_connect
+        let myq = 0
+        let p = ''
+        for (let i=0; i < u.followedPeople.length; i++){
+          myq = { iD: u.followedPeople[i]};
+          p = db_connect
               .collection("users")
-              .findOne(myq, function (err, r) {
-                if (err) throw err;
-                friendsOfUser.push(r)
-              });
+              .findOne(myq);
+          fOfUser.push(p)
         }
-        res.json(friendsOfUser)
-      });
+        Promise.all(fOfUser)
+        .then((followedP)=>{
+          res.json(followedP)
+        })
+      })
+
 });
 
-userRoutes.route("/user/isFriend/:user1/:user2").get(function (req, res) {
+userRoutes.route("/user/isFollowed/:user1/:user2").get(function (req, res) {
   let db_connect = dbo.getDb();
   let myquery = { iD: parseInt(req.params.user1)};
   db_connect
@@ -125,7 +131,7 @@ userRoutes.route("/user/isFriend/:user1/:user2").get(function (req, res) {
       .findOne(myquery, function (err, result) {
         if (err) throw err;
         let u = result
-        if (u.friends.includes(parseInt(req.params.user2))){
+        if (u.followedPeople.includes(parseInt(req.params.user2))){
           res.json(true)
         }else{
           res.json(false);
@@ -192,6 +198,46 @@ userRoutes.route("/user/changeUsersStatusOfFiction/:iD").post(function (req, res
               if (err) throw err;
               res.json(result)
           })
+        }
+      });
+});
+
+userRoutes.route("/user/follow/:iD").post(function (req, res) {
+  let db_connect = dbo.getDb();
+  let myquery = { iD: parseInt(req.params.iD)};
+  db_connect
+      .collection("users")
+      .findOne(myquery, function (err, user) {
+        if (err) throw err;
+        if(!user.followedPeople.includes(req.body.targetID)){
+          let upd = {$push:{followedPeople: req.body.targetID}}
+          db_connect
+          .collection("users")
+          .updateOne(myquery, upd, function(err, result){
+            res.json('Target is being followed')
+          })
+        }else{
+          res.json('Target is already followed')
+        }
+      });
+});
+
+userRoutes.route("/user/unfollow/:iD").post(function (req, res) {
+  let db_connect = dbo.getDb();
+  let myquery = { iD: parseInt(req.params.iD)};
+  db_connect
+      .collection("users")
+      .findOne(myquery, function (err, user) {
+        if (err) throw err;
+        if(user.followedPeople.includes(req.body.targetID)){
+          let upd = {$pull:{followedPeople: req.body.targetID}}
+          db_connect
+          .collection("users")
+          .updateOne(myquery, upd, function(err, result){
+            res.json('Target is not being followed')
+          })
+        }else{
+          res.json('Target is already unfollowed')
         }
       });
 });

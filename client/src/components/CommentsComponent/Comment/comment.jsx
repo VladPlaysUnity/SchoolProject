@@ -5,10 +5,10 @@ const CommentBlock = (props)=>{
   let rating = parseInt(props.comment.dynamicInfo.likes.length) - parseInt(props.comment.dynamicInfo.dislikes.length)
 
   let like = () =>{
-    props.like_or_dislike(props.comment.id, 'like')
+    props.like_or_dislike(props.comment.iD, 'like')
   }
   let dislike = () =>{
-    props.like_or_dislike(props.comment.id, 'dislike')
+    props.like_or_dislike(props.comment.iD, 'dislike')
   }
 
   let lAndD = <div></div>

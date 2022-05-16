@@ -8,10 +8,13 @@ import { getAllUsers, getUserById } from './../../DataBase/Users.js'
 
 const CatalogPageContainer = (props) =>{
   const [elems, setElems] = useState([]);
+  const [allFilms, setAllFilms] = useState([]);
+  const [allBooks, setAllBooks] = useState([]);
   const [type, setType] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  let catalog = ''
   let params = useParams()
 
   useEffect(()=>{
@@ -23,7 +26,7 @@ const CatalogPageContainer = (props) =>{
         getAllBooks()
         .then((result)=>{
             setIsLoaded(true);
-            setElems(result)
+            setAllBooks(result)
         })
         break;
 
@@ -32,7 +35,7 @@ const CatalogPageContainer = (props) =>{
           getAllFilms()
           .then((result)=>{
               setIsLoaded(true);
-              setElems(result)
+              setAllFilms(result)
           })
           break;
 
@@ -52,16 +55,20 @@ const CatalogPageContainer = (props) =>{
           let rb = []
           let f = ''
           for (let i = 0; i < user.markedFictions.length; i++){
-            if ((user.markedFictions[i].type == 'book')&&(user.markedFictions[i].status == 'completed')){
-              f = getFictionById(user.markedFictions[i])
-              .then((fic)=>{
-                rb.push(fic)
-              })
+            if (user.markedFictions[i].status == 'completed'){
+              f = getFictionById(user.markedFictions[i].fiction_id)
+              rb.push(f)
             }
           }
           Promise.all(rb)
           .then((d)=>{
-            setElems(d)
+            let k = []
+            for (let i = 0; i < d.length; i++) {
+              if(d[i].type == 'book'){
+                k.push(d[i])
+              }
+            }
+            setElems(k)
             setIsLoaded(true)
           })
         })
@@ -74,16 +81,20 @@ const CatalogPageContainer = (props) =>{
           let pb = []
           let f = ''
           for (let i = 0; i < user.markedFictions.length; i++){
-            if ((user.markedFictions[i].type == 'book')&&(user.markedFictions[i].status == 'planned')){
-              f = getFictionById(user.markedFictions[i])
-              .then((fic)=>{
-                pb.push(fic)
-              })
+            if (user.markedFictions[i].status == 'planned'){
+              f = getFictionById(user.markedFictions[i].fiction_id)
+              pb.push(f)
             }
           }
           Promise.all(pb)
           .then((d)=>{
-            setElems(d)
+            let k = []
+            for (let i = 0; i < d.length; i++) {
+              if(d[i].type == 'book'){
+                k.push(d[i])
+              }
+            }
+            setElems(k)
             setIsLoaded(true)
           })
         })
@@ -96,16 +107,20 @@ const CatalogPageContainer = (props) =>{
           let wf = []
           let f = ''
           for (let i = 0; i < user.markedFictions.length; i++){
-            if ((user.markedFictions[i].type == 'film')&&(user.markedFictions[i].status == 'completed')){
-              f = getFictionById(user.markedFictions[i])
-              .then((fic)=>{
-                wf.push(fic)
-              })
+            if (user.markedFictions[i].status == 'completed'){
+              f = getFictionById(user.markedFictions[i].fiction_id)
+              wf.push(f)
             }
           }
           Promise.all(wf)
           .then((d)=>{
-            setElems(d)
+            let k = []
+            for (let i = 0; i < d.length; i++) {
+              if(d[i].type == 'film'){
+                k.push(d[i])
+              }
+            }
+            setElems(k)
             setIsLoaded(true)
           })
         })
@@ -118,25 +133,37 @@ const CatalogPageContainer = (props) =>{
           let pf = []
           let f = ''
           for (let i = 0; i < user.markedFictions.length; i++){
-            if ((user.markedFictions[i].type == 'film')&&(user.markedFictions[i].status == 'planned')){
-              f = getFictionById(user.markedFictions[i])
-              .then((fic)=>{
-                pf.push(fic)
-              })
+            if (user.markedFictions[i].status == 'planned'){
+              f = getFictionById(user.markedFictions[i].fiction_id)
+              pf.push(f)
             }
           }
           Promise.all(pf)
           .then((d)=>{
-            setElems(d)
+            let k = []
+            for (let i = 0; i < d.length; i++) {
+              if(d[i].type == 'film'){
+                k.push(d[i])
+              }
+            }
+            setElems(k)
             setIsLoaded(true)
           })
         })
         break;
 
       default:
-        setElems([])
+        return
     }
   }, [params])
+
+  if (params.type=='allBooks'){
+    catalog = <CatalogPage type={type} elems={allBooks} />
+  }else if (params.type=='allFilms') {
+    catalog = <CatalogPage type={type} elems={allFilms} />
+  } else{
+    catalog = <CatalogPage type={type} elems={elems} />
+  }
 
 
   if(error){
@@ -150,7 +177,7 @@ const CatalogPageContainer = (props) =>{
   } else if(isLoaded){
     return (
       <div>
-        <CatalogPage type={type} elems={elems} />
+        {catalog}
       </div>
       );
   }

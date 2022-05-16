@@ -1,6 +1,6 @@
-import {changeLikeOrDislikeOfComment} from './../../DataBase/Comments.js'
+import {} from './../../DataBase/Comments.js'
 import {getLoggedUserId, setLoggedUserId} from './../../LocalInfo/localInfo.js'
-import {makeUsersFriends, stopBeingFriends} from './../../DataBase/Users.js'
+import {followUser, unfollowUser} from './../../DataBase/Users.js'
 
 const CHANGE_LIKE_OR_DISLIKE_OF_COMMENT= 'CHANGE-LIKE-OR-DISLIKE-OF-COMMENT';
 const ADD_USER_AS_FRIEND = 'ADD-USER-AS-FRIEND';
@@ -11,15 +11,15 @@ let initialState = {}
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_LIKE_OR_DISLIKE_OF_COMMENT:{
-      changeLikeOrDislikeOfComment(action.user_id, action.comment_id, action.like_or_dislike)
+      //changeLikeOrDislikeOfComment(action.user_id, action.comment_id, action.like_or_dislike)
       return state
     }
     case ADD_USER_AS_FRIEND:{
-      makeUsersFriends(action.logged_user_id, action.friend_user_id)
+      followUser(action.logged_user_id, action.friend_user_id)
       return state
     }
     case REMOVE_USER_FROM_FRIENDLIST:{
-      stopBeingFriends(action.logged_user_id, action.friend_user_id)
+      unfollowUser(action.logged_user_id, action.friend_user_id)
       return state
     }
 

@@ -1,6 +1,6 @@
 import { getFictionById, getAllFictions, getRatingOfFictionFromUser, getOverallRatingOfFiction } from './../../DataBase/Fictions.js'
-import { getUsersFriends, getFictionAtUser } from './../../DataBase/Users.js'
-import { getFictionsComments } from './../../DataBase/Comments.js'
+import { getUsersFollowedPeople, getFictionAtUser } from './../../DataBase/Users.js'
+import { getFictionsComments, likeOrDislike } from './../../DataBase/Comments.js'
 import { getLoggedInStatus } from './../../LocalInfo/localInfo.js'
 import { changeUsersRatingOfFictionActionCreator, changeUsersStatusOfFictionActionCreator, addCommentActionCreator } from './../../redux/reducers/chosenFictionReducer.js'
 import { useParams, useNavigate } from "react-router-dom";
@@ -10,8 +10,10 @@ import ChosenFiction from './chosenFiction.jsx'
 const ChosenFictionContainer = (props) =>{
   const [fiction, setFiction] = useState([]);
   const [userRating, setUserRating] = useState(0)
+  const [fictionAtFollowed, setFictionAtFollowed] = useState([])
   const [userStatus, setUserStatus] = useState('not completed')
   const [overallRating, setOverallRating] = useState(0)
+  const [comments, setComments] = useState([])
   const params = useParams();
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,27 +22,49 @@ const ChosenFictionContainer = (props) =>{
  useEffect(() => {
    let fP = getFictionById(params.iD)
    let oRP = getOverallRatingOfFiction(params.iD)
+   let commentsPromise = getFictionsComments(params.iD)
    let rP = ''
    let uS = ''
+   let followedPeoplePromises = ''
    if (getLoggedInStatus()){
      rP = getRatingOfFictionFromUser(params.iD, props.loggedUser)
      uS = getFictionAtUser(props.loggedUser, params.iD)
+     followedPeoplePromises = getUsersFollowedPeople(props.loggedUser)
+     .then((followedPeople)=>{
+       let k = ''
+       let miniPromises = []
+       for (let i = 0; i < followedPeople.length; i++) {
+         k = getFictionAtUser(followedPeople[i].iD, params.iD)
+         .then((status)=>{
+
+           let d = {iD:followedPeople[i].iD, name:followedPeople[i].usersInfo.name, status:status}
+           return d
+         })
+         miniPromises.push(k)
+       }
+        return Promise.all(miniPromises)
+     })
    }
 
+
+
    if (getLoggedInStatus()){
-     Promise.all([fP, rP, oRP, uS])
+     Promise.all([fP, rP, oRP, uS, followedPeoplePromises, commentsPromise])
      .then((result)=>{
        setFiction(result[0])
        setOverallRating(result[2])
        setUserRating(result[1])
        setUserStatus(result[3])
+       setFictionAtFollowed(result[4])
+       setComments(result[5].reverse())
        setIsLoaded(true)
      })
    } else{
-     Promise.all([fP, oRP])
+     Promise.all([fP, oRP, commentsPromise])
      .then((result)=>{
        setFiction(result[0])
        setOverallRating(result[1])
+       setComments(result[2].reverse())
        setIsLoaded(true)
      })}
  }, [props.loggedUser,params.iD]);
@@ -61,14 +85,39 @@ const ChosenFictionContainer = (props) =>{
    setUserStatus(status)
  }
 
- let fictionAtFriends = []
- //let friendsOfUser = getUsersFriends(props.loggedUser)
- //for (var i = 0; i < friendsOfUser.length; i++) {
- //  fictionAtFriends.push({iD:friendsOfUser[i].iD, name:friendsOfUser[i].usersInfo.name, status:getFictionAtUser(fiction.iD, friendsOfUser[i].iD)})
- //}
+ async function addComment(content) {
+   let newComment = {place:params.iD, author:props.loggedUser, content:content}
+   await fetch("http://localhost:5000/comment/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newComment),
+  })
+  .then((a)=>{
+    getFictionsComments(params.iD)
+    .then((comments)=>{
+      setComments(comments.reverse())
+    }, (error)=>{
+      setError(error)
+    })
+  })
+  .catch(error => {
+    window.alert(error);
+    return;
+  });
+ }
 
- let addComment = (content) =>{
-   //props.dispatch(addCommentActionCreator(props.loggedUser,fiction.iD, content))
+ let like_or_dislike = (comment_id, like_or_dislike)=>{
+   likeOrDislike(comment_id, props.loggedUser, like_or_dislike)
+   .then((a)=>{
+     getFictionsComments(params.iD)
+     .then((comments)=>{
+       setComments(comments.reverse())
+     }, (error)=>{
+       setError(error)
+     })
+   })
  }
 
 
@@ -86,8 +135,8 @@ const ChosenFictionContainer = (props) =>{
                 usersStatus={userStatus}
                 usersRating={userRating}
                 overallRating={overallRating}
-                comments={[]}
-                fictionAtFriends={fictionAtFriends} addComment={addComment}
+                comments={comments} like_or_dislike={like_or_dislike}
+                fictionAtFollowed={fictionAtFollowed} addComment={addComment}
                 changeUsersRatingOfFiction={changeUsersRatingOfFiction}
                 changeUsersStatusOfFiction={changeUsersStatusOfFiction}
                 view={view} dispatch={props.dispatch}/>

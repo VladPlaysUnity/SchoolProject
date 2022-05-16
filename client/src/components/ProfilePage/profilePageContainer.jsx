@@ -1,9 +1,9 @@
 import ProfilePage from './profile.jsx';
-import {getAllUsers, getUsersFriends, getUserById, isFriend} from './../../DataBase/Users.js'
-import {getFictionById} from './../../DataBase/Fictions.js'
-import {getUsersComments} from './../../DataBase/Comments.js'
+import { getAllUsers, getUsersFollowedPeople, getUserById, isFollowed, followUser, unfollowUser } from './../../DataBase/Users.js'
+import { getFictionById } from './../../DataBase/Fictions.js'
+import { getUsersComments, likeOrDislike } from './../../DataBase/Comments.js'
 import {} from './../../LocalInfo/localInfo.js'
-import {addUserAsFriendActionCreator, removeUserFromFriendlistActionCreator} from './../../redux/reducers/profileReducer.js'
+import { addUserAsFriendActionCreator, removeUserFromFriendlistActionCreator } from './../../redux/reducers/profileReducer.js'
 import CatalogPage from './../Catalog/catalog.jsx'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
@@ -11,7 +11,9 @@ import { useParams } from 'react-router-dom';
 const ProfilePageContainer = (props) =>{
   const [user, setUser] = useState({})
   const [view, setView] = useState('nobodyIsLoggedIn')
-  const [isUserFriend, setIsUserFriend] = useState(false)
+  const [followedPeople, setFollowedPeople] = useState([])
+  const [comments, setComments] = useState([])
+  const [isUserFollowed, setIsUserFollowed] = useState(false)
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const params = useParams();
@@ -26,10 +28,10 @@ const ProfilePageContainer = (props) =>{
           setIsLoaded(true)
         } else{
           setView('notLoggedUsersProfile')
-          isFriend(props.loggedUser, params.iD)
+          isFollowed(props.loggedUser, params.iD)
           .then((iF)=>{
             setUser(res)
-            setIsUserFriend(iF)
+            setIsUserFollowed(iF)
             setIsLoaded(true)
           })
         }
@@ -40,14 +42,47 @@ const ProfilePageContainer = (props) =>{
     }, (error)=>{
       setError(error)
     })
-  }, [props.loggedUser, params.iD])
 
+    getUsersFollowedPeople(params.iD)
+    .then((people)=>{
+      console.log(people);
+      setFollowedPeople(people)
+    }, (error)=>{
+      setError(error)
+    })
 
-  let addFriend = (friend_id) =>{
-    //props.dispatch(addUserAsFriendActionCreator(props.loggedUser, friend_id))
+    getUsersComments(params.iD)
+    .then((comments)=>{
+      setComments(comments.reverse())
+    }, (error)=>{
+      setError(error)
+    })
+
+  }, [props.loggedUser, params.iD, isUserFollowed])
+
+  let like_or_dislike = (comment_id, like_or_dislike)=>{
+    likeOrDislike(comment_id, props.loggedUser, like_or_dislike)
+    .then((a)=>{
+      getUsersComments(params.iD)
+      .then((comments)=>{
+        setComments(comments.reverse())
+      }, (error)=>{
+        setError(error)
+      })
+    })
   }
-  let removeFriend = (friend_id) =>{
-    //props.dispatch(removeUserFromFriendlistActionCreator(props.loggedUser, friend_id))
+
+  let follow = (target_id) =>{
+    followUser(props.loggedUser, target_id)
+    .then((k)=>{
+      setIsUserFollowed(true)
+    })
+  }
+  let unfollow = (target_id) =>{
+    unfollowUser(props.loggedUser, target_id)
+    .then((k)=>{
+      setIsUserFollowed(false)
+    })
   }
 
 
@@ -64,10 +99,10 @@ const ProfilePageContainer = (props) =>{
       <div>
       <ProfilePage dispatch={props.dispatch}
       info={user.usersInfo} iD={user.iD}
-      isFriend={isUserFriend}
-      friends={[]}
-      addFriend={addFriend} removeFriend={removeFriend}
-      comments={[]} view={view}/>
+      isFollowed={isUserFollowed} like_or_dislike={like_or_dislike}
+      followedPeople={followedPeople}
+      followUser={follow} unfollowUser={unfollow}
+      comments={comments} view={view}/>
       </div>
     )
   }

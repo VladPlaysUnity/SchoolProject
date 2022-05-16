@@ -3,7 +3,7 @@ import React from 'react'
 import FictionDetails from './FictionDetails/fictionDetails.jsx'
 import CommentsContainer from './../CommentsComponent/commentsContainer.jsx'
 import WriteCommentSection from './WriteCommentSection/writeCommentSection.jsx'
-import AtFriends from './AtFriends/atFriends.jsx'
+import AtFollowed from './AtFollowed/atFollowed.jsx'
 
 const ChosenFiction = (props) =>{
 
@@ -11,10 +11,10 @@ const ChosenFiction = (props) =>{
 
   let details = ''
   let select_options = <div></div>
+  let wcs = <div></div>
 
   let changeStatus = () =>{
     props.changeUsersStatusOfFiction(status_line.current.value)
-    console.log('ko');
   }
 
   if (props.fiction.type == 'film' ){
@@ -27,6 +27,8 @@ const ChosenFiction = (props) =>{
                         <option value='dropped'>Dropped</option>
                         <option value='not completed'>Not watched</option>
                       </select>
+      wcs = <WriteCommentSection addComment={props.addComment}/>
+
     }
   } else if (props.fiction.type == 'book') {
     details = <FictionDetails changeUsersRatingOfFiction={props.changeUsersRatingOfFiction} view={props.view} info={props.fiction.info} overallRating={props.overallRating} usersRating={props.usersRating} type={props.fiction.type}/>
@@ -38,14 +40,15 @@ const ChosenFiction = (props) =>{
                         <option value='dropped'>Dropped</option>
                         <option value='not completed'>Not read</option>
                       </select>
+      wcs = <WriteCommentSection addComment={props.addComment}/>
     }
   }
 
-  let atFriends = ''
+  let atFollowed = ''
   if (props.view=="loggedInUsersView"){
-    atFriends = <AtFriends fictionAtFriends={props.fictionAtFriends}/>
+    atFollowed = <AtFollowed fictionAtFollowed={props.fictionAtFollowed}/>
   } else if (props.view=="notLoggedInUsersView"){
-    atFriends = <div></div>
+    atFollowed = <div></div>
   }
 
   return (
@@ -67,10 +70,10 @@ const ChosenFiction = (props) =>{
         <div className={s.link_to_download}>Link to download</div>
 
         <div className={s.cta}>
-          <WriteCommentSection addComment={props.addComment}/>
-          <CommentsContainer comments={props.comments} dispatch={props.dispatch}/>
+            {wcs}
+            <CommentsContainer comments={props.comments} like_or_dislike={props.like_or_dislike} dispatch={props.dispatch}/>
         </div>
-        {atFriends}
+        {atFollowed}
       </div>
     </div>
   )

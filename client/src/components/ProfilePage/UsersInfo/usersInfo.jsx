@@ -5,17 +5,17 @@ const UsersInfo = (props)=>{
 
   let navigate = useNavigate()
 
-  let addFriend = () =>{
-    props.addFriend(props.iD)
+  let follow = () =>{
+    props.followUser(props.iD)
   }
-  let removeFriend = () =>{
-    props.removeFriend(props.iD)
+  let unfollow = () =>{
+    props.unfollowUser(props.iD)
   }
 
-  let changable_button = <button onClick={()=>navigate('/catalog/allUsers')}>Edit mode</button>
+  let changable_button = <button>Edit mode</button>
   if (props.view == 'notLoggedUsersProfile'){
-    changable_button = props.isFriend ? <button onClick={removeFriend}>Remove user from friendlist</button> :
-                                        <button onClick={addFriend}>Add User as friend</button>
+    changable_button = props.isFollowed ? <button onClick={unfollow}>Unfollow</button> :
+                                        <button onClick={follow}>Follow</button>
   } else if (props.view == 'nobodyIsLoggedIn'){
     changable_button = <div></div>
   }
