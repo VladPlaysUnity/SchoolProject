@@ -46,7 +46,7 @@ async function getStatusOfCommentFromUser (comment_id, user_id) {
   const response = await fetch(`http://localhost:5000/comment/getStatusOfCommentFromUser/${comment_id}/${user_id}`);
 
   if (!response.ok) {
-     const message = `An error occurred at getUserById: ${response.statusText}`;
+     const message = `An error occurred at getStatusOfCommentFromUser: ${response.statusText}`;
       window.alert(message);
       return;
   }

@@ -242,4 +242,15 @@ userRoutes.route("/user/unfollow/:iD").post(function (req, res) {
       });
 });
 
+userRoutes.route("/user/changeProfilePhoto/:iD").post(function (req, res) {
+  let db_connect = dbo.getDb();
+  let myquery = { iD: parseInt(req.params.iD)};
+  db_connect
+      .collection("users")
+      .updateOne(myquery, {$set:{"usersInfo.profilePhoto": req.body.photo}} ,function (err, user) {
+        if (err) throw err;
+        res.json('Success')
+      });
+});
+
 module.exports = userRoutes;

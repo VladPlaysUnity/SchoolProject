@@ -182,9 +182,9 @@ commentRoutes.route("/comment/getStatusOfCommentFromUser/:iD/:userID").get(funct
     .collection("comments")
     .findOne(myquery, function (err, comment) {
       if (err) throw err;
-      if (comment.dynamicInfo.likes.includes(req.params.userID)){
+      if (comment.dynamicInfo.likes.includes(parseInt(req.params.userID))){
         res.json('like')
-      } else if (comment.dynamicInfo.dislikes.includes(req.params.userID)) {
+      } else if (comment.dynamicInfo.dislikes.includes(parseInt(req.params.userID))) {
         res.json('dislike')
       } else{
         res.json('0')

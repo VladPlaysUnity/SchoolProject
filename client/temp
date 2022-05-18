@@ -1,18 +1,39 @@
-.then((d)=>{
-  async function getId(){
-    const response = await fetch(`http://localhost:5000/user/checkIfUsersDataIsRight/${name}/${pass}`);
+let params = useParams()
+useEffect(()=>{
+  let proms = []
+  if (getLoggedInStatus()){
+    props.comments.map((comment) =>{
+      let promises = []
+      promises.push(comment)
+      promises.push(getUserById(parseInt(comment.staticInfo.author)).then((user)=>user.usersInfo.name))
+      promises.push(getFictionById(parseInt(comment.staticInfo.place)).then((fiction)=>fiction.info.name))
+      promises.push(getStatusOfCommentFromUser(comment.iD, parseInt(comment.staticInfo.author)))
+      proms.push(Promise.all(promises))
+    })
 
-    if (!response.ok) {
-       const message = `An error occurred at registpage: ${response.statusText}`;
-        window.alert(message);
-        return;
-    }
+      Promise.all(proms)
+      .then((data)=>{
+        setComments(data.map((comment)=>{
+          console.log(comment);
+          return <CommentBlock comment={comment[0]} status={comment[3]} author={comment[1]} place={comment[2]} loggedIn={getLoggedInStatus()} like_or_dislike={props.like_or_dislike}/>
+        }))
+        setIsLoaded(true)
+      })
+  } else{
+    props.comments.map((comment) =>{
+      let promises = []
+      promises.push(comment)
+      promises.push(getUserById(parseInt(comment.staticInfo.author)).then((user)=>user.usersInfo.name))
+      promises.push(getFictionById(parseInt(comment.staticInfo.place)).then((fiction)=>fiction.info.name))
+      proms.push(Promise.all(promises))
+      })
 
-    return await response.json();
+      Promise.all(proms)
+      .then((data)=>{
+        setComments(data.map((comment)=>{
+          return <CommentBlock comment={comment[0]} status={'none'} author={comment[1]} place={comment[2]} loggedIn={getLoggedInStatus()} like_or_dislike={props.like_or_dislike}/>
+        }))
+        setIsLoaded(true)
+      })
   }
-  getId().then((id)=>{
-    setLoggedUserId(parseInt(id))
-    console.log(5);
-   return state
-  })
-})
+},[params.iD])

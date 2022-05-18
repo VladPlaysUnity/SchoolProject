@@ -1,17 +1,18 @@
 import s from './writeCommentSection.module.css'
-import React from 'react'
+import { useState } from 'react'
 
 const WriteCommentSection = (props) => {
-  let newCommentElement = React.createRef();
+  const [commentText, setCommentText] = useState('')
 
   let sendMessage = ()=>{
-    props.addComment(newCommentElement.current.value)
+    props.addComment(commentText)
+    setCommentText('')
   };
 
   return(
     <div className={s.write_comment_section}>
-      <textarea ref={newCommentElement} placeholder="Write your comment here"></textarea>
-      <button onClick={sendMessage}>Send</button>
+      <textarea value={commentText} onChange={(e)=>{ setCommentText(e.target.value) }} placeholder="Write your comment here"></textarea>
+      <button className={s.butt2} onClick={sendMessage}>Send</button>
     </div>
   )
 }

@@ -47,6 +47,7 @@ const FictionDetails = (props) =>{
           </div>
 
           <div className={s.about}>
+            <p><b>Date of realease</b>: {props.info.releaseDate}</p>
             <p><b>Description</b>: {props.info.description}</p>
           </div>
       </div>

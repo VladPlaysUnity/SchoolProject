@@ -20,43 +20,27 @@ const ChosenFictionContainer = (props) =>{
   const navigate = useNavigate();
 
  useEffect(() => {
+   console.log('lol2');
    let fP = getFictionById(params.iD)
    let oRP = getOverallRatingOfFiction(params.iD)
    let commentsPromise = getFictionsComments(params.iD)
    let rP = ''
    let uS = ''
-   let followedPeoplePromises = ''
    if (getLoggedInStatus()){
      rP = getRatingOfFictionFromUser(params.iD, props.loggedUser)
      uS = getFictionAtUser(props.loggedUser, params.iD)
-     followedPeoplePromises = getUsersFollowedPeople(props.loggedUser)
-     .then((followedPeople)=>{
-       let k = ''
-       let miniPromises = []
-       for (let i = 0; i < followedPeople.length; i++) {
-         k = getFictionAtUser(followedPeople[i].iD, params.iD)
-         .then((status)=>{
-
-           let d = {iD:followedPeople[i].iD, name:followedPeople[i].usersInfo.name, status:status}
-           return d
-         })
-         miniPromises.push(k)
-       }
-        return Promise.all(miniPromises)
-     })
    }
 
 
 
    if (getLoggedInStatus()){
-     Promise.all([fP, rP, oRP, uS, followedPeoplePromises, commentsPromise])
+     Promise.all([fP, rP, oRP, uS, commentsPromise])
      .then((result)=>{
        setFiction(result[0])
        setOverallRating(result[2])
        setUserRating(result[1])
        setUserStatus(result[3])
-       setFictionAtFollowed(result[4])
-       setComments(result[5].reverse())
+       setComments(result[4].reverse())
        setIsLoaded(true)
      })
    } else{
@@ -136,7 +120,7 @@ const ChosenFictionContainer = (props) =>{
                 usersRating={userRating}
                 overallRating={overallRating}
                 comments={comments} like_or_dislike={like_or_dislike}
-                fictionAtFollowed={fictionAtFollowed} addComment={addComment}
+                addComment={addComment} userID={props.loggedUser}
                 changeUsersRatingOfFiction={changeUsersRatingOfFiction}
                 changeUsersStatusOfFiction={changeUsersStatusOfFiction}
                 view={view} dispatch={props.dispatch}/>

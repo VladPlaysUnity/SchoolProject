@@ -6,21 +6,24 @@ import CommentBlock from './Comment/comment.jsx'
 
 const CommentsContainer= (props)=>{
 
-  let comments = []
-  if (getLoggedInStatus()){
-    comments = props.comments.map((comment) =>{
-      return <CommentBlock comment={comment} loggedIn={getLoggedInStatus()} status={getStatusOfCommentFromUser(getLoggedUserId(), comment.iD)} like_or_dislike={props.like_or_dislike}/>
-  })} else{
-    comments = props.comments.map((comment) =>{
-      return <CommentBlock comment={comment} loggedIn={getLoggedInStatus()} />
-  })}
+  let comments = props.comments.map((comment)=>{
+    return <CommentBlock comment={comment} loggedUser={getLoggedUserId()} loggedIn={getLoggedInStatus()} like_or_dislike={props.like_or_dislike}/>
+  })
 
+  if(false){
+    return (
+      <div>
+        Loading...
+      </div>
+    )
+  } else if(true){
+    return (
+      <div className={s.comments}>
+        {comments}
+      </div>
+    )
+  }
 
-  return (
-    <div className={s.comments}>
-      {comments}
-    </div>
-  )
 }
 
 export default CommentsContainer;

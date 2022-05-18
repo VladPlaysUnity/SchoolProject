@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 
 const ProfilePageContainer = (props) =>{
   const [user, setUser] = useState({})
+  const [editMode, setEditMode] = useState(false)
   const [view, setView] = useState('nobodyIsLoggedIn')
   const [followedPeople, setFollowedPeople] = useState([])
   const [comments, setComments] = useState([])
@@ -58,7 +59,7 @@ const ProfilePageContainer = (props) =>{
       setError(error)
     })
 
-  }, [props.loggedUser, params.iD, isUserFollowed])
+  }, [props.loggedUser, params.iD, isUserFollowed, editMode])
 
   let like_or_dislike = (comment_id, like_or_dislike)=>{
     likeOrDislike(comment_id, props.loggedUser, like_or_dislike)
@@ -84,7 +85,24 @@ const ProfilePageContainer = (props) =>{
       setIsUserFollowed(false)
     })
   }
+  let toggleEdit = ()=>{
+    setEditMode(!editMode)
+  }
 
+
+  async function changeProfilePhoto(photo) {
+    await fetch(`http://localhost:5000/user/changeProfilePhoto/${props.loggedUser}`, {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify({photo:photo}),
+   })
+   .catch(error => {
+     window.alert(error);
+     return;
+   });
+  }
 
 
   if (error){
@@ -98,7 +116,8 @@ const ProfilePageContainer = (props) =>{
     return(
       <div>
       <ProfilePage dispatch={props.dispatch}
-      info={user.usersInfo} iD={user.iD}
+      info={user.usersInfo} editMode={editMode}
+      iD={user.iD} togEdit={toggleEdit} changeProfilePhoto={changeProfilePhoto}
       isFollowed={isUserFollowed} like_or_dislike={like_or_dislike}
       followedPeople={followedPeople}
       followUser={follow} unfollowUser={unfollow}

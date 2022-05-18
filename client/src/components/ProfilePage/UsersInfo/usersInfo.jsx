@@ -12,7 +12,7 @@ const UsersInfo = (props)=>{
     props.unfollowUser(props.iD)
   }
 
-  let changable_button = <button>Edit mode</button>
+  let changable_button = <button className={s.b4} onClick={()=>{props.togEdit()}}>{props.editMode? "Editing...": "Edit profile"}</button>
   if (props.view == 'notLoggedUsersProfile'){
     changable_button = props.isFollowed ? <button onClick={unfollow}>Unfollow</button> :
                                         <button onClick={follow}>Follow</button>
@@ -24,10 +24,10 @@ const UsersInfo = (props)=>{
     <div className={s.add_info}>
       <div className={s.username}><div>{props.username}</div></div>
       <div className={s.add_friend_button}>{changable_button}</div>
-      <div className={s.watched_films}><NavLink to={'/user/'+ props.iD +'/watched_films'}><button>Watched films</button></NavLink></div>
-      <div className={s.planned_films}><NavLink to={'/user/'+ props.iD + '/planned_films'}><button>Planned films</button></NavLink></div>
-      <div className={s.read_books}><NavLink to={'/user/' + props.iD + '/read_books'}><button>Read books</button></NavLink></div>
-      <div className={s.planned_books}><NavLink to={'/user/' + props.iD + '/planned_books'}><button>Planned books</button></NavLink></div>
+      <div className={s.watched_films}><NavLink to={'/user/'+ props.iD +'/watched_films'}><button className={s.b3}>Watched films</button></NavLink></div>
+      <div className={s.planned_films}><NavLink to={'/user/'+ props.iD + '/planned_films'}><button className={s.b3}>Planned films</button></NavLink></div>
+      <div className={s.read_books}><NavLink to={'/user/' + props.iD + '/read_books'}><button className={s.b3}>Read books</button></NavLink></div>
+      <div className={s.planned_books}><NavLink to={'/user/' + props.iD + '/planned_books'}><button className={s.b3}>Planned books</button></NavLink></div>
     </div>
   )
 }

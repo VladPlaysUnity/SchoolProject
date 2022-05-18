@@ -46,7 +46,7 @@ const ChosenFiction = (props) =>{
 
   let atFollowed = ''
   if (props.view=="loggedInUsersView"){
-    atFollowed = <AtFollowed fictionAtFollowed={props.fictionAtFollowed}/>
+    atFollowed = <AtFollowed userID={props.userID} view={props.view}/>
   } else if (props.view=="notLoggedInUsersView"){
     atFollowed = <div></div>
   }

@@ -1,5 +1,5 @@
 import s from './fictionElem.module.css'
-import {NavLink} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {getOverallRatingOfFiction} from './../../../DataBase/Fictions.js'
 import {useState, useEffect} from 'react'
 
@@ -7,6 +7,8 @@ const FictionElem = (props) =>{
   const [overallRating, setOverallRating] = useState(0)
   const [error, setError] = useState(null);
   const [overallRIsLoaded, setOverallRIsLoaded] = useState(false);
+
+  let navigate = useNavigate()
 
   useEffect(()=>{
     getOverallRatingOfFiction(props.iD)
@@ -37,10 +39,10 @@ const FictionElem = (props) =>{
           <p><b>Genre:</b> {props.info.genre}</p>
           {author_or_director}
           <p><b>Date of release:</b> {props.info.releaseDate}</p>
-          <p><b>Description:</b> {props.info.description}</p>
+          <p><b>Description:</b> {props.info.description.slice(0, 700)}</p>
         </div>
         <div className={s.rating}>Rating:<br />Loading...</div>
-        <div className={s.link_button}><NavLink to={fictionLink}><button>Look!</button></NavLink></div>
+        <button className={s.butt1} onClick={()=>{navigate(fictionLink)}}>Look!</button>
       </div>
     )
   } else if (overallRIsLoaded) {
@@ -52,10 +54,10 @@ const FictionElem = (props) =>{
           <p><b>Genre:</b> {props.info.genre}</p>
           {author_or_director}
           <p><b>Date of release:</b> {props.info.releaseDate}</p>
-          <p><b>Description:</b> {props.info.description}</p>
+          <p><b>Description:</b> {(props.info.description.length > 700)?props.info.description.slice(0, 700)+"...":props.info.description}</p>
         </div>
         <div className={s.rating}>Rating:<br />{overallRating}</div>
-        <div className={s.link_button}><NavLink to={fictionLink}><button>Look!</button></NavLink></div>
+        <button className={s.butt1} onClick={()=>{navigate(fictionLink)}}>Look!</button>
       </div>
     )
   }

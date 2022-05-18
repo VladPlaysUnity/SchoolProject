@@ -1,6 +1,7 @@
 .commentBlock{
   width: 100%;
-  border: 2px solid black;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border: 0px solid rgb(144, 144, 144);
   height: auto;
   display: grid;
   grid-template-columns: 1fr;
@@ -14,13 +15,6 @@
   grid-area: n;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-areas: "u nothing p";
-}
-.names .placeName{
-  grid-area: p;
-}
-.names .user{
-  grid-area: u;
 }
 
 .commentText{
@@ -38,4 +32,79 @@
   flex-direction: row;
   justify-content: space-around;
   padding-bottom: 5px;
+}
+
+.green{
+  background-color: rgb(119, 252, 57);
+}
+.red{
+  background-color: rgb(249, 40, 36);
+}
+
+.b2 {
+  backface-visibility: hidden;
+  border-radius: .375rem;
+  border-style: solid;
+  border-width: .125rem;
+  box-sizing: border-box;
+  color: #212121;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Circular,Helvetica,sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 1% 1%;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transform: translateZ(0) scale(1);
+  transition: transform .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.b2:not(:disabled):hover {
+  transform: scale(1.05);
+}
+
+.b2:not(:disabled):hover:active {
+  transform: scale(1.05) translateY(.125rem);
+}
+
+.b2:focus {
+  outline: 0 solid transparent;
+}
+
+.b2:focus:before {
+  content: "";
+  left: calc(-1*.375rem);
+  pointer-events: none;
+  position: absolute;
+  top: calc(-1*.375rem);
+  transition: border-radius;
+  user-select: none;
+}
+
+.b2:focus:not(:focus-visible) {
+  outline: 0 solid transparent;
+}
+
+.b2:focus:not(:focus-visible):before {
+  border-width: 0;
+}
+
+.b2:not(:disabled):active {
+  transform: translateY(.125rem);
+}
+
+.names a{
+  text-decoration: none;
+  color: black;
+  background-color: white;
+}
+.names a:hover{
+  text-decoration: none;
+  color: white;
+  background-color: black;
 }
