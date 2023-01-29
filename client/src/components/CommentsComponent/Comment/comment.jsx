@@ -125,8 +125,6 @@ const CommentBlock = (props)=>{
   } else{
     return <div>Loading</div>
   }
-
-
 }
 
 export default CommentBlock;

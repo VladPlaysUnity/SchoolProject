@@ -4,7 +4,7 @@ import React from 'react'
 const FictionDetails = (props) =>{
   let author_or_director = ''
   if (props.type == 'film'){
-    author_or_director = <p><b>Director</b>: {props.info.director}</p>
+    author_or_director = <p><b>Director</b>: {props.info.author}</p>
   } else if (props.type == 'book') {
     author_or_director = <p><b>Author</b>: {props.info.author}</p>
   }

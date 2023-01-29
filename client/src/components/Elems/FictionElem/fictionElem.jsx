@@ -7,7 +7,8 @@ const FictionElem = (props) =>{
   const [overallRating, setOverallRating] = useState(0)
   const [error, setError] = useState(null);
   const [overallRIsLoaded, setOverallRIsLoaded] = useState(false);
-
+  const [link, setLink] = useState('/fiction/'+props.iD)
+  console.log(props.iD);
   let navigate = useNavigate()
 
   useEffect(()=>{
@@ -25,7 +26,7 @@ const FictionElem = (props) =>{
   if (props.type == 'book'){
     author_or_director = <p><b>Author:</b> {props.info.author}</p>
   } else if (props.type == 'film'){
-    author_or_director = <p><b>Director:</b> {props.info.director}</p>
+    author_or_director = <p><b>Director:</b> {props.info.author}</p>
   }
 
   if (error){
@@ -39,10 +40,10 @@ const FictionElem = (props) =>{
           <p><b>Genre:</b> {props.info.genre}</p>
           {author_or_director}
           <p><b>Date of release:</b> {props.info.releaseDate}</p>
-          <p><b>Description:</b> {props.info.description.slice(0, 700)}</p>
+          <p><b>Description:</b> {props.info.description.slice(0, 600)}</p>
         </div>
         <div className={s.rating}>Rating:<br />Loading...</div>
-        <button className={s.butt1} onClick={()=>{navigate(fictionLink)}}>Look!</button>
+        <button className={s.butt1} onClick={()=>{navigate(link)}}>Look!</button>
       </div>
     )
   } else if (overallRIsLoaded) {
@@ -54,10 +55,10 @@ const FictionElem = (props) =>{
           <p><b>Genre:</b> {props.info.genre}</p>
           {author_or_director}
           <p><b>Date of release:</b> {props.info.releaseDate}</p>
-          <p><b>Description:</b> {(props.info.description.length > 700)?props.info.description.slice(0, 700)+"...":props.info.description}</p>
+          <p><b>Description:</b> {(props.info.description.length > 600)?props.info.description.slice(0, 600)+"...":props.info.description}</p>
         </div>
         <div className={s.rating}>Rating:<br />{overallRating}</div>
-        <button className={s.butt1} onClick={()=>{navigate(fictionLink)}}>Look!</button>
+        <button className={s.butt1} onClick={()=>{navigate(link)}}>Look!</button>
       </div>
     )
   }

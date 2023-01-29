@@ -12,11 +12,16 @@ const RegistrationPage = (props)=>{
   let sg_password = React.createRef();
 
   let logIn = ()=>{
-    props.tryLogIn(log_username.current.value, log_password.current.value)
+    if(log_username.current.value != '', log_password.current.value!=''){
+      props.tryLogIn(log_username.current.value, log_password.current.value)
+    }
+
   }
 
   let signUp = ()=>{
-    props.trySignUp(sg_username.current.value,sg_password.current.value, sg_email.current.value)
+    if(sg_username.current.value!='', sg_password.current.value!='', sg_email.current.value!=''){
+      props.trySignUp(sg_username.current.value,sg_password.current.value, sg_email.current.value)
+    }
   }
 
   return (
@@ -26,7 +31,7 @@ const RegistrationPage = (props)=>{
         {props.message[0]=='login' ? props.message[1]: null}
         <div className={s.username} ><input placeholder="username" type="text" ref={log_username}/></div>
         <div className={s.password} ><input placeholder="password" type="text" ref={log_password}/></div>
-        <div><button onClick={logIn}>Log in</button></div>
+        <div><button className={s.butt1} onClick={logIn}>Log in</button></div>
       </div>
       <hr />
       <div className={s.signUpBlock}>
@@ -36,7 +41,7 @@ const RegistrationPage = (props)=>{
         <div className={s.username}><input placeholder="username" type="text" ref={sg_username}/></div>
         <div className={s.email}><input placeholder="e-mail" type="text" ref={sg_email}/></div>
         <div className={s.password}><input placeholder="password" type="text" ref={sg_password}/></div>
-        <div><button onClick={signUp}>Sign up</button></div>
+        <div><button className={s.butt1} onClick={signUp}>Sign up</button></div>
       </div>
     </div>
   );

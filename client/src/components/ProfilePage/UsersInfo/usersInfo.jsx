@@ -14,8 +14,8 @@ const UsersInfo = (props)=>{
 
   let changable_button = <button className={s.b4} onClick={()=>{props.togEdit()}}>{props.editMode? "Editing...": "Edit profile"}</button>
   if (props.view == 'notLoggedUsersProfile'){
-    changable_button = props.isFollowed ? <button onClick={unfollow}>Unfollow</button> :
-                                        <button onClick={follow}>Follow</button>
+    changable_button = props.isFollowed ? <button className={s.b4} onClick={unfollow}>Unfollow</button> :
+                                        <button className={s.b4} onClick={follow}>Follow</button>
   } else if (props.view == 'nobodyIsLoggedIn'){
     changable_button = <div></div>
   }

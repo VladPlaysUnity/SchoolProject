@@ -20,7 +20,6 @@ const ChosenFictionContainer = (props) =>{
   const navigate = useNavigate();
 
  useEffect(() => {
-   console.log('lol2');
    let fP = getFictionById(params.iD)
    let oRP = getOverallRatingOfFiction(params.iD)
    let commentsPromise = getFictionsComments(params.iD)
